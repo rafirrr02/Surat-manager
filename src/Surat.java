@@ -1,3 +1,9 @@
+// ========================================
+// Surat.java - Model Data Surat
+// Author: Citra Novia Pratiwi
+// Deskripsi: Class untuk menyimpan data
+//            surat masuk dan keluar
+// ========================================
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
