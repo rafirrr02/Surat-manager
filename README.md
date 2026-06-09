@@ -19,7 +19,7 @@ Aplikasi desktop Java untuk manajemen surat masuk dan surat keluar.
 
 ## Anggota Kelompok
 
-- Rafi Raihan Rijal
-- Citra Novia Pratiwi
-- Dini Prihartini
-- Jesisca Alvia Mia Azizah
+- Rafi Raihan Rijal (242502040029)
+- Citra Novia Pratiwi (242502040025)
+- Dini Prihartini (242502040019)
+- Jesisca Alvia Mia Azizah (242502040020)
