@@ -6,37 +6,78 @@ import java.util.stream.Collectors;
 import java.io.*;
 import java.awt.Desktop;
 
+/**
+ * Kelas SuratManager bertanggung jawab mengelola seluruh data surat,
+ * termasuk operasi CRUD, filter, sorting, export, dan data dummy.
+ *
+ * @author Kelompok UAS PBO
+ */
 public class SuratManager {
+
+    /** Daftar surat yang tersimpan dalam memori */
     private List<Surat> daftarSurat = new ArrayList<>();
 
+    /**
+     * Konstruktor SuratManager.
+     * Otomatis memuat data dummy saat objek dibuat.
+     */
     public SuratManager() {
         loadDummyData();
     }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 
+    /**
+     * Menambahkan surat baru ke dalam daftar.
+     *
+     * @param surat objek Surat yang akan ditambahkan
+     */
     public void tambahSurat(Surat surat) {
         daftarSurat.add(surat);
     }
 
+    /**
+     * Menghapus surat berdasarkan index.
+     *
+     * @param index posisi surat dalam daftar (dimulai dari 0)
+     */
     public void hapusSurat(int index) {
         if (index >= 0 && index < daftarSurat.size()) {
             daftarSurat.remove(index);
         }
     }
 
+    /**
+     * Memperbarui data surat pada index tertentu.
+     *
+     * @param index posisi surat yang akan diperbarui
+     * @param surat objek Surat baru sebagai pengganti
+     */
     public void updateSurat(int index, Surat surat) {
         if (index >= 0 && index < daftarSurat.size()) {
             daftarSurat.set(index, surat);
         }
     }
 
+    /**
+     * Mengambil seluruh daftar surat yang tersimpan.
+     *
+     * @return List berisi semua objek Surat
+     */
     public List<Surat> getDaftarSurat() {
         return daftarSurat;
     }
 
     // ── FILTER ────────────────────────────────────────────────────────────────
 
+    /**
+     * Memfilter daftar surat berdasarkan keyword dan jenis surat.
+     * Pencarian keyword mencakup nomor surat, perihal, dan pengirim/penerima.
+     *
+     * @param keyword kata kunci pencarian (bisa null atau kosong)
+     * @param jenis   jenis surat MASUK/KELUAR (null = semua jenis)
+     * @return List surat yang sesuai dengan filter
+     */
     public List<Surat> filter(String keyword, Surat.JenisSurat jenis) {
         return daftarSurat.stream()
             .filter(s -> {
@@ -52,6 +93,13 @@ public class SuratManager {
 
     // ── SORT ──────────────────────────────────────────────────────────────────
 
+    /**
+     * Mengurutkan daftar surat berdasarkan tanggal.
+     *
+     * @param list      List surat yang akan diurutkan
+     * @param ascending true = terlama ke terbaru, false = terbaru ke terlama
+     * @return List surat yang sudah diurutkan
+     */
     public List<Surat> sortByTanggal(List<Surat> list, boolean ascending) {
         return list.stream()
             .sorted(ascending
@@ -62,6 +110,14 @@ public class SuratManager {
 
     // ── EXPORT PDF ────────────────────────────────────────────────────────────
 
+    /**
+     * Mengekspor daftar surat ke file HTML yang dapat dicetak sebagai PDF.
+     * File HTML akan otomatis dibuka di browser default.
+     *
+     * @param list     List surat yang akan diekspor
+     * @param filePath path tujuan file (ekstensi .pdf akan diganti .html)
+     * @throws Exception jika terjadi kesalahan saat menulis atau membuka file
+     */
     public void exportToPdf(List<Surat> list, String filePath) throws Exception {
         StringBuilder html = new StringBuilder();
         html.append("<html><head><style>");
@@ -80,6 +136,7 @@ public class SuratManager {
         html.append("<tr><th>No</th><th>Nomor Surat</th><th>Perihal</th>");
         html.append("<th>Pengirim/Penerima</th><th>Tanggal</th><th>Jenis</th><th>Keterangan</th></tr>");
 
+        // Iterasi setiap surat dan masukkan ke baris tabel HTML
         int no = 1;
         for (Surat s : list) {
             String cls = s.getJenis() == Surat.JenisSurat.MASUK ? "masuk" : "keluar";
@@ -101,7 +158,7 @@ public class SuratManager {
             pw.print(html.toString());
         }
 
-        // Buka di browser default
+        // Buka file HTML di browser default sistem
         File htmlFile = new File(htmlPath);
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(htmlFile.toURI());
@@ -110,6 +167,10 @@ public class SuratManager {
 
     // ── DUMMY DATA ────────────────────────────────────────────────────────────
 
+    /**
+     * Memuat 10 data surat dummy untuk keperluan demonstrasi aplikasi.
+     * Terdiri dari 5 surat masuk dan 5 surat keluar tahun 2024.
+     */
     private void loadDummyData() {
         daftarSurat.add(new Surat("SM-001/2024", "Undangan Rapat Koordinasi",
             "Kementerian Pendidikan", LocalDate.of(2024, 1, 5),
